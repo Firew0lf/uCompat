@@ -1,5 +1,5 @@
 --[[
-	Main µLua compatibility layer/lib for ctrµLua
+		Main µLua compatibility layer/lib for ctrµLua
 
 	The goal is not to provide a full compatibility, but something close.
 ]]
@@ -13,4 +13,6 @@ ULUA_BOOT_FILE = "main.lua"
 ULUA_BOOT_FULLPATH = (ULUA_DIR..ULUA_BOOT_FILE)
 
 -- Other libs
-screen = require("uCompat.screen")
+require("uCompat.screen")
+require("uCompat.Color")
+require("uCompat.Controls")
