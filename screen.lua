@@ -39,6 +39,7 @@ local videoStack = {}
 local alpha = ALPHA_RESET
 
 local drawScreen = SCREEN_UP
+local offsetX, offsetY = 0,0
 
 local fpscount = 0
 local fpstime = ctr.time()
@@ -53,12 +54,6 @@ function startDrawing()
 end
 
 function stopDrawing()
-	-- As you can change the screen size, we have to re-calculate this every time.
-	local offsetX = (gfx.BOTTOM_WIDTH-SCREEN_WIDTH)/2
-	local offsetY = (gfx.BOTTOM_HEIGHT-SCREEN_HEIGHT)/2
-	if drawScreen == gfx.SCREEN_UP then
-		offsetX = offsetX + 40
-	end
 	
 	-- FPS counter
 	fpscount = fpscount + 1
@@ -98,35 +93,35 @@ function screen.setAlpha(level, layer)
 end
 
 function screen.print(scr, x, y, text, color)
-	videoStack[scr][#videoStack[scr]] = {"text", {x, y, text, 8, RGB2RGBA(color), nil}}
+	videoStack[scr][#videoStack[scr]] = {"text", {offsetX+x, offsetY+y, text, 8, RGB2RGBA(color), nil}}
 end
 
 function screen.printFont(scr, x, y, text, color, font)
-	videoStack[scr][#videoStack[scr]] = {"text", {x, y, text, 8, RGB2RGBA(color), font}}
+	videoStack[scr][#videoStack[scr]] = {"text", {offsetX+x, offsetY+y, text, 8, RGB2RGBA(color), font}}
 end
 
 function screen.blit(scr, x, y, img, sx, sy, w, h)
 	local sizex, sizey = img:getSize()
-	videoStack[scr][#videoStack[scr]] = {"img", {x, y, (sx or 0), (sy or 0), (w or sizex), (h or sizey)}}
+	videoStack[scr][#videoStack[scr]] = {"img", {offsetX+x, offsetY+y, (sx or 0), (sy or 0), (w or sizex), (h or sizey)}}
 end
 
 function screen.drawPoint(scr, x, y, color)
-	videoStack[scr][#videoStack[scr]] = {"point", {x, y, RGB2RGBA(color)}}
+	videoStack[scr][#videoStack[scr]] = {"point", {offsetX+x, offsetY+y, RGB2RGBA(color)}}
 end
 
 function screen.drawLine(scr, x0, y0, x1, y1, color)
-	videoStack[scr][#videoStack[scr]] = {"line", {x0, y0, x1, y1, RGB2RGBA(color)}}
+	videoStack[scr][#videoStack[scr]] = {"line", {offsetX+x0, offsetX+y0, offsetX+x1, offsetY+y1, RGB2RGBA(color)}}
 end
 
 function screen.drawRect(scr, x0, y0, x1, y1, color)
-	videoStack[scr][#videoStack[scr]] = {"line", {x0, y0, x0, y1, RGB2RGBA(color)}}
-	videoStack[scr][#videoStack[scr]] = {"line", {x0, y0, x1, y0, RGB2RGBA(color)}}
-	videoStack[scr][#videoStack[scr]] = {"line", {x0, y1, x1, y1, RGB2RGBA(color)}}
-	videoStack[scr][#videoStack[scr]] = {"line", {x1, y0, x1, y1, RGB2RGBA(color)}}
+	videoStack[scr][#videoStack[scr]] = {"line", {offsetX+x0, offsetY+y0, offsetX+x0, offsetY+y1, RGB2RGBA(color)}}
+	videoStack[scr][#videoStack[scr]] = {"line", {offsetX+x0, offsetY+y0, offsetX+x1, offsetY+y0, RGB2RGBA(color)}}
+	videoStack[scr][#videoStack[scr]] = {"line", {offsetX+x0, offsetY+y1, offsetX+x1, offsetY+y1, RGB2RGBA(color)}}
+	videoStack[scr][#videoStack[scr]] = {"line", {offsetX+x1, offsetY+y0, offsetX+x1, offsetY+y1, RGB2RGBA(color)}}
 end
 
 function screen.drawFillRect(scr, x0, y0, x1, y1, color)
-	videoStack[scr][#videoStack[scr]] = {"rectangle", {x0, y0, (x1-x0), (y1-y0), 0, RGB2RGBA(color)}}
+	videoStack[scr][#videoStack[scr]] = {"rectangle", {offsetX+x0, offsetY+y0, offsetX+(x1-x0), offsetY+(y1-y0), 0, RGB2RGBA(color)}}
 end
 
 function screen.drawGradientRect(scr, x0, y0, x1, y1, color, color, color, color)
@@ -162,6 +157,13 @@ function screen.startDrawing2D() -- unused
 	videoStack = {}
 	videoStack[0] = {}
 	videoStack[1] = {}
+	
+	-- As you can change the screen size, we have to re-calculate this every time.
+	offsetX = (gfx.BOTTOM_WIDTH-SCREEN_WIDTH)/2
+	offsetY = (gfx.BOTTOM_HEIGHT-SCREEN_HEIGHT)/2
+	if drawScreen == gfx.SCREEN_UP then
+		offsetX = offsetX + 40
+	end
 end
 
 function screen.endDrawing()
