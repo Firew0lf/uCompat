@@ -7,6 +7,9 @@ Actually done:
  * Color
  * Controls
  * dsUser
+ * Image
+ * Motion
  * Rumble
  * screen
+ * Sprite
  * Timer

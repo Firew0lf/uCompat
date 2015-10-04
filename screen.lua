@@ -102,7 +102,7 @@ end
 
 function screen.blit(scr, x, y, img, sx, sy, w, h)
 	local sizex, sizey = img:getSize()
-	videoStack[scr][#videoStack[scr]] = {"img", {offsetX+x, offsetY+y, (sx or 0), (sy or 0), (w or sizex), (h or sizey)}}
+	videoStack[scr][#videoStack[scr]] = {"img", img.texture, {offsetX+x, offsetY+y, (sx or 0), (sy or 0), (w or sizex), (h or sizey), img.rotation}}
 end
 
 function screen.drawPoint(scr, x, y, color)
@@ -171,7 +171,7 @@ function screen.endDrawing()
 	for i=1, #videoStack[drawScreen] do
 		local e = videoStack[drawScreen][i]
 		if e[1] == "img" then
-			
+			e[2]:drawPart(unpack(e[3]))
 		else
 			gfx[e[1]](unpack(e[2])
 		end
