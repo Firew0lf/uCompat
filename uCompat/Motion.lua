@@ -6,7 +6,7 @@ Nobody actually used this module. So please use directly the ctrµLua functions.
 
 -- Local
 
-local hid = require("hid")
+local hid = require("ctr.hid")
 
 calX, calY, calZ = 0,0,0 -- for Motion.calibrate
 

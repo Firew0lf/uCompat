@@ -58,7 +58,7 @@ function Image.mirrorH(img, activate)
 
 end
 
-function Image.mirrorV(img. activate)
+function Image.mirrorV(img, activate)
 
 end
 

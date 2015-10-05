@@ -9,6 +9,7 @@ Actually done:
  * dsUser
  * Font
  * Image
+ * ini
  * Motion
  * Rumble
  * screen

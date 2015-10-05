@@ -59,3 +59,6 @@ end
 function Controls.setStylusDblcFreq(freq)
 	dblcFreq = freq
 end
+
+-- Initialize the thing
+Controls.read()
