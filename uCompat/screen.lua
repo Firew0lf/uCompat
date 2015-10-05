@@ -46,7 +46,7 @@ local fpstime = ctr.time()
 
 local function RGB2RGBA(c)
 	if not c then return nil end
-	return (c*256)+(alpha*2.55)
+	return (c*256)+math.floor(alpha*2.55)
 end
 
 local function checkBuffer(scr)
@@ -65,9 +65,12 @@ end
 function stopDrawing()
 	
 	-- FPS counter
-	fpscount = fpscount + 1
+	if drawScreen == 0 then
+		fpscount = fpscount + 1
+	end
 	if (ctr.time() - fpstime) > 1000 then
-		NB_FPS = fpscount
+		NB_FPS = math.floor(fpscount/2) -- remove the "/2" to enjoy having "60 FPS" displayed :)
+		fpstime = ctr.time()
 		fpscount = 0
 	end
 	
@@ -191,6 +194,12 @@ end
 
 function screen.waitForVBL() -- unused
 
+end
+
+-- Interface
+
+function screen.offset()
+	return offsetX, offsetY
 end
 
 -- Initialize the thing

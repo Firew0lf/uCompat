@@ -4,6 +4,10 @@
 	Warning: this HID library will give you headaches. Really.
 ]]
 
+-- Surprise
+
+require("uCompat.screen") -- needed for the stylus offset
+
 -- Local
 
 local ctr = require("ctr")
@@ -39,6 +43,11 @@ function Controls.read()
 	end
 	
 	Stylus.X, Stylus.Y = hid.touch()
+	local offsetX, offsetY = screen.offset()
+	Stylus.X = (Stylus.X - offsetX)
+	if Stylus.X < 0 or Stylus.X > 255 then Stylus.X = stylusX end
+	Stylus.Y = (Stylus.Y - offsetY)
+	if Stylus.Y < 0 or Stylus.Y > 191 then Stylus.Y = stylusY end
 	Stylus.deltaX = (stylusX-Stylus.X)
 	Stylus.deltaY = (stylusY-Stylus.Y)
 	stylusX, stylusY = Stylus.X, Stylus.Y
