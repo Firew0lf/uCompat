@@ -31,6 +31,7 @@ NB_FPS = 0
 
 local ctr = require("ctr")
 local gfx = require("ctr.gfx")
+local color = require("ctr.gfx.color")
 
 -- As the µLua and ctrµLua drawing systems are very differents, we have to use a
 -- stack. That's bad, but it's the only solution.
@@ -45,8 +46,11 @@ local fpscount = 0
 local fpstime = ctr.time()
 
 local function RGB2RGBA(c)
-	if not c then return nil end
-	return (c*256)+math.floor(alpha*2.55)
+	if not c then return color.getDefault() end
+	local r = (c%32)*8
+	local g = math.floor(c%1024/32)*8
+	local b = math.floor(c/1024)*8
+	return color.RGBA8(r, g, b, math.floor(alpha*2.55))
 end
 
 local function checkBuffer(scr)
@@ -131,7 +135,7 @@ function screen.drawRect(scr, x0, y0, x1, y1, color)
 end
 
 function screen.drawFillRect(scr, x0, y0, x1, y1, color)
-	checkBuffer(scr)[#videoStack[scr]+1] = {"rectangle", {offsetX+x0, offsetY+y0, offsetX+(x1-x0), offsetY+(y1-y0), 0, RGB2RGBA(color)}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"rectangle", {offsetX+x0, offsetY+y0, (x1-x0), (y1-y0), 0, RGB2RGBA(color)}}
 end
 
 function screen.drawGradientRect(scr, x0, y0, x1, y1, color, color, color, color)
@@ -169,7 +173,7 @@ function screen.startDrawing2D() -- unused
 	-- As you can change the screen size, we have to re-calculate this every time.
 	offsetX = (gfx.BOTTOM_WIDTH-SCREEN_WIDTH)/2
 	offsetY = (gfx.BOTTOM_HEIGHT-SCREEN_HEIGHT)/2
-	if drawScreen == 0 then
+	if drawScreen == gfx.GFX_TOP then
 		offsetX = offsetX + 40
 	end
 end
@@ -182,6 +186,8 @@ function screen.endDrawing()
 		local e = videoStack[drawScreen][i]
 		if e[1] == "img" then
 			e[2]:drawPart(table.unpack(e[3]))
+		elseif e[1] == "map" then
+			e[2]:draw(table.unpack(e[3]))
 		else
 			gfx[e[1]](table.unpack(e[2]))
 		end
@@ -200,6 +206,10 @@ end
 
 function screen.offset()
 	return offsetX, offsetY
+end
+
+function screen.getStack(scr)
+	return checkBuffer(scr)
 end
 
 -- Initialize the thing

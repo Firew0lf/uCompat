@@ -2,15 +2,17 @@
 	Colors related µLua compatibility layer/lib for ctrµLua
 ]]
 
+-- Module
+
 Color = {}
 
 function Color.new(r, g, b)
-	r = r*8
-	g = g*8
-	b = b*8
-	return (r+g*256+b*65536)
+	return (r+g*32+b*1024)
 end
 
 function Color.new256(r, g, b)
-	return (r+g*256+b*65536)
+	r = math.floor(r*31/255)
+	g = math.floor(g*31/255)
+	b = math.floor(b*31/255)
+	return (r+g*32+b*1024)
 end

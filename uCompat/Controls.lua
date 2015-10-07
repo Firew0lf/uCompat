@@ -44,6 +44,7 @@ function Controls.read()
 	
 	Stylus.X, Stylus.Y = hid.touch()
 	local offsetX, offsetY = screen.offset()
+	if screen.getMainLcd() then offsetX = (offsetX-40) end
 	Stylus.X = (Stylus.X - offsetX)
 	if Stylus.X < 0 or Stylus.X > 255 then Stylus.X = stylusX end
 	Stylus.Y = (Stylus.Y - offsetY)

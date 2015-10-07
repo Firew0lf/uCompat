@@ -10,6 +10,7 @@ Actually done:
  * Font
  * Image
  * ini
+ * Map
  * Motion
  * Rumble
  * screen
