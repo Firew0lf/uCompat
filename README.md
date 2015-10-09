@@ -6,6 +6,7 @@ Untested.
 Actually done:
  * Color
  * Controls
+ * Debug
  * dsUser
  * Font
  * Image
@@ -14,6 +15,7 @@ Actually done:
  * Motion
  * Rumble
  * screen
+ * ScrollMap
  * Sprite
  * System
  * Timer

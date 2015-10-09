@@ -77,9 +77,22 @@ function stopDrawing()
 		fpstime = ctr.time()
 		fpscount = 0
 	end
+
+	-- Debug
+	
+	if Debug and Debug.isDebugOn then
+		local buffer="FPS: "..NB_FPS
+		local xx=255-(string.len(buffer)*6)
+		screen.print(SCREEN_UP,171,152,"RAM : "..math.floor(collectgarbage("count")).."ko.",Debug.debugColor)
+		screen.print(SCREEN_UP,171,162,"VRAM: "..System.CurrentVramFree().."o.",Debug.debugColor)
+		screen.print(SCREEN_UP,171,172,"PRAM: "..System.CurrentPalFree().."o.",Debug.debugColor)
+		screen.print(SCREEN_UP,171,182,"FPS : "..NB_FPS,Debug.debugColor)
+		screen.drawTextBox(SCREEN_DOWN, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Debug.debugText, Debug.debugColor)
+	end
 	
 	-- render
 	screen.endDrawing()
+	screen.setAlpha(ALPHA_RESET)
 end
 
 function render()
@@ -143,7 +156,7 @@ function screen.drawGradientRect(scr, x0, y0, x1, y1, color, color, color, color
 end
 
 function screen.drawTextBox(scr, x0, y0, x1, y1, text, color)
-
+	checkBuffer(scr)[#videoStack[scr]+1] = {"wrappedText", {offsetX+x0, offsetY+y0, text, x1-x0, 8, RGB2RGBA(color)}}
 end
 
 function screen.drawTexturedQuad(scr, x0, y0, x1, y1, x2, y2, x3, y3, img, sx, sy, w, h)
@@ -171,8 +184,8 @@ function screen.startDrawing2D() -- unused
 	videoStack[drawScreen] = {}
 	
 	-- As you can change the screen size, we have to re-calculate this every time.
-	offsetX = (gfx.BOTTOM_WIDTH-SCREEN_WIDTH)/2
-	offsetY = (gfx.BOTTOM_HEIGHT-SCREEN_HEIGHT)/2
+	offsetX = math.floor((gfx.BOTTOM_WIDTH-SCREEN_WIDTH)/2)
+	offsetY = math.floor((gfx.BOTTOM_HEIGHT-SCREEN_HEIGHT)/2)
 	if drawScreen == gfx.GFX_TOP then
 		offsetX = offsetX + 40
 	end

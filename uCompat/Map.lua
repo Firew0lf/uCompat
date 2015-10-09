@@ -32,7 +32,7 @@ function Map.draw(scr, m, x, y, w, h)
 	local stack = screen.getStack(scr)
 	local offsetX, offsetY = screen.offset()
 	
-	stack[#stack+1] = {"map", m, {offsetX+(x*math.floor(m.scrollX*m.tileWidth)), offsetY+(y*math.floor(m.scrollY*m.tileHeight))}}
+	stack[#stack+1] = {"map", m.map, {offsetX+(x*math.floor(m.scrollX*m.tileWidth)), offsetY+(y*math.floor(m.scrollY*m.tileHeight))}}
 end
 
 function Map.scroll(m, x, y)
