@@ -151,8 +151,13 @@ function screen.drawFillRect(scr, x0, y0, x1, y1, color)
 	checkBuffer(scr)[#videoStack[scr]+1] = {"rectangle", {offsetX+x0, offsetY+y0, (x1-x0), (y1-y0), 0, RGB2RGBA(color)}}
 end
 
-function screen.drawGradientRect(scr, x0, y0, x1, y1, color, color, color, color)
-
+function screen.drawGradientRect(scr, x0, y0, x1, y1, color1, color2, color3, color4)
+	local midX = math.ceil((x1-x0)/2)
+	local midY = math.ceil((y1-y0)/2)
+	checkBuffer(scr)[#videoStack[scr]+1] = {"rectangle", {offsetX+x0, offsetY+y0, midX, midY, 0, RGB2RGBA(color1)}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"rectangle", {offsetX+x0+midX, offsetY+y0, midX, midY, 0, RGB2RGBA(color2)}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"rectangle", {offsetX+x0, offsetY+y0+midY, midX, midY, 0, RGB2RGBA(color3)}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"rectangle", {offsetX+x0+midX, offsetY+y0+midY, midX, midY, 0, RGB2RGBA(color4)}}
 end
 
 function screen.drawTextBox(scr, x0, y0, x1, y1, text, color)

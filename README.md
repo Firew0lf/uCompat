@@ -4,6 +4,7 @@
 Untested.
 
 Actually done:
+ * Canvas
  * Color
  * Controls
  * Debug
@@ -13,9 +14,12 @@ Actually done:
  * ini
  * Map
  * Motion
+ * Nifi
  * Rumble
  * screen
  * ScrollMap
+ * Sound (without sound)
  * Sprite
  * System
  * Timer
+ * Wifi

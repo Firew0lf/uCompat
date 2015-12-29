@@ -1,5 +1,5 @@
 --[[
-		Debug Images related µLua compatibility layer/lib for ctrµLua
+		Debug related µLua compatibility layer/lib for ctrµLua
 ]]
 
 -- Module
