@@ -73,7 +73,7 @@ function stopDrawing()
 		fpscount = fpscount + 1
 	end
 	if (ctr.time() - fpstime) > 1000 then
-		NB_FPS = math.floor(fpscount/2) -- remove the "/2" to enjoy having "60 FPS" displayed :)
+		NB_FPS = fpscount
 		fpstime = ctr.time()
 		fpscount = 0
 	end
@@ -128,7 +128,7 @@ function screen.printFont(scr, x, y, text, color, font)
 end
 
 function screen.blit(scr, x, y, img, sx, sy, w, h)
-	local sizex, sizey = img:getSize()
+	local sizex, sizey = img.texture:getSize()
 	checkBuffer(scr)[#videoStack[scr]+1] = {"img", img.texture, {offsetX+x, offsetY+y, (sx or 0), (sy or 0), (w or sizex), (h or sizey), img.rotation}}
 end
 
@@ -208,11 +208,16 @@ function screen.endDrawing()
 	gfx.endFrame()
 	
 	-- set the screen
-	drawScreen = ((drawScreen == 0 and 1) or gfx.render() or 0)
+	drawScreen = ((drawScreen == 0 and 1) or 0)
+	if drawScreen == 0 then
+		gfx.render()
+	else
+		gfx.waitForVBlank()
+	end
 end
 
 function screen.waitForVBL() -- unused
-
+	gfx.waitForVBLank()
 end
 
 -- Interface
