@@ -1,8 +1,5 @@
 --[[
 		Images related µLua compatibility layer/lib for ctrµLua
-	
-	Actually doesn't support GIFs, because sfillib doesn't. Use PNGs, these are
-better.
 ]]
 
 -- Local
@@ -23,7 +20,9 @@ function Image.load(path, dest)
 	if not t then return nil end
 	return { -- Image object
 		texture = t,
-		rotation = 0
+		rotation = 0,
+		scaleX = 1,
+		scaleY = 1
 	}
 end
 
@@ -43,23 +42,28 @@ function Image.height(img)
 end
 
 function Image.scale(img, w, h)
-
+	local iw,ih = img.texture:getSize()
+	img.scaleX = w/iw
+	img.scaleY = h/ih
+	img.texture:scale(img.scaleX, img.scaleY)
 end
 
 function Image.rotate(img, angle, cx, cy)
-	img.rotation = angle*((math.pi*2)/512)
+	img.rotation = angle*(math.pi/256)
 end
 
 function Image.rotateDegree(img, angle, cx, cy)
-	img.rotation = angle*((math.pi*2)/360)
+	img.rotation = angle*(math.pi/180)
 end
 
 function Image.mirrorH(img, activate)
-
+	img.scaleY = (0-img.scaleY)
+	img.texture:scale(img.scaleX, img.scaleY)
 end
 
 function Image.mirrorV(img, activate)
-
+	img.scaleX = (0-img.scaleY)
+	img.textire:scale(img.scaleX, img.scaleY)
 end
 
 function Image.setTint(img, color)

@@ -112,7 +112,7 @@ function screen.getLayer()
 end
 
 function screen.getAlphaLevel()
-	return ALPHA_RESET
+	return alpha
 end
 
 function screen.setAlpha(level, layer)
@@ -137,14 +137,14 @@ function screen.drawPoint(scr, x, y, color)
 end
 
 function screen.drawLine(scr, x0, y0, x1, y1, color)
-	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetX+y0, offsetX+x1, offsetY+y1, RGB2RGBA(color)}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetX+y0, offsetX+x1, offsetY+y1, 1, RGB2RGBA(color)}}
 end
 
 function screen.drawRect(scr, x0, y0, x1, y1, color)
-	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y0, offsetX+x0, offsetY+y1, RGB2RGBA(color)}}
-	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y0, offsetX+x1, offsetY+y0, RGB2RGBA(color)}}
-	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y1, offsetX+x1, offsetY+y1, RGB2RGBA(color)}}
-	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x1, offsetY+y0, offsetX+x1, offsetY+y1, RGB2RGBA(color)}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y0, offsetX+x0, offsetY+y1, 1, RGB2RGBA(color)}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y0, offsetX+x1, offsetY+y0, 1, RGB2RGBA(color)}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y1, offsetX+x1, offsetY+y1, 1, RGB2RGBA(color)}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x1, offsetY+y0, offsetX+x1, offsetY+y1, 1, RGB2RGBA(color)}}
 end
 
 function screen.drawFillRect(scr, x0, y0, x1, y1, color)

@@ -4,6 +4,26 @@
 	Informations are fake ones, until ctrµLua/the ctruLib can deal with it.
 ]]
 
+-- Local
+
+local cfgu = require("ctr.cfgu")
+
+local language5 = {
+	[cfgu.LANGUAGE_JP] = 0,
+	[cfgu.LANGUAGE_EN] = 1,
+	[cfgu.LANGUAGE_FR] = 2,
+	[cfgu.LANGUAGE_DE] = 3,
+	[cfgu.LANGUAGE_IT] = 4,
+	[cfgu.LANGUAGE_ES] = 5,
+	-- always english if not in the list above
+	[cfgu.LANGUAGE_ZH] = 1,
+	[cfgu.LANGUAGE_KO] = 1,
+	[cfgu.LANGUAGE_NL] = 1,
+	[cfgu.LANGUAGE_PT] = 1,
+	[cfgu.LANGUAGE_RU] = 1,
+	[cfgu.LANGUAGE_TW] = 1
+}
+
 -- Module
 
 dsUser = {}
@@ -13,19 +33,21 @@ function dsUser.getColor()
 end
 
 function dsUser.getBirthDay()
-	return 1
+	local _, day = cfgu.getBirthday()
+	return day
 end
 
 function dsUser.getBirthMonth()
-	return 1
+	local month, _ = cfgu.getBirthday()
+	return month
 end
 
 function dsUser.getName()
-	return "NDS"
+	return cfgu.getUsername()
 end
 
 function dsUser.getNameLength()
-	return 3
+	return #(dsUser.getName())
 end
 
 function dsUser.getMessage()
@@ -33,7 +55,7 @@ function dsUser.getMessage()
 end
 
 function dsUser.getMessageLength()
-	return 0
+	return #(dsUser.getMessage())
 end
 
 function dsUser.getAlarmHour()
@@ -45,7 +67,7 @@ function dsUser.getAlarmMinute()
 end
 
 function dsUser.getLanguage()
-	return 0
+	return language5[cgfu.getLanguage()]
 end
 
 function dsUser.getGBAScreen()

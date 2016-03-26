@@ -13,7 +13,7 @@ local ctr = require("ctr")
 
 Timer = {
 	new = function()
-		local t = ctr.time()
+		local t = ctr.time() -- small patch
 		local isStarted = false
 		local tick = 0
 	
