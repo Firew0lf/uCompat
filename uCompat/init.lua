@@ -16,6 +16,11 @@ ULUA_LIBS = (ULUA_DIR.."libs/")
 ULUA_BOOT_FILE = "main.lua"
 ULUA_BOOT_FULLPATH = (ULUA_DIR..ULUA_BOOT_FILE)
 
+-- Some old Lua functions
+function table.getn(t)
+	return #t
+end
+
 -- Other libs
 require("uCompat.screen")
 require("uCompat.Color")
@@ -35,4 +40,4 @@ require("uCompat.dsUser")
 require("uCompat.System")
 require("uCompat.ini")
 require("uCompat.Wifi")
-reqiore("uCompat.Nifi")
+require("uCompat.Nifi")

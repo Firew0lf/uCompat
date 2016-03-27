@@ -124,12 +124,14 @@ function screen.print(scr, x, y, text, color)
 end
 
 function screen.printFont(scr, x, y, text, color, font)
-	checkBuffer(scr)[#videoStack[scr]+1] = {"text", {offsetX+x, offsetY+y, text, 8, RGB2RGBA(color), font}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"text", {offsetX+x, offsetY+y, text, 8, RGB2RGBA(color), nil}}
 end
 
 function screen.blit(scr, x, y, img, sx, sy, w, h)
+	local x = math.floor(x) -- \ Compatibility patch for some homebrews not using integers
+	local y = math.floor(y) -- /
 	local sizex, sizey = img.texture:getSize()
-	checkBuffer(scr)[#videoStack[scr]+1] = {"img", img.texture, {offsetX+x, offsetY+y, (sx or 0), (sy or 0), (w or sizex), (h or sizey), img.rotation}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"img", img.texture, {offsetX+x+math.floor(sizex/2), offsetY+y+math.floor(sizey/2), (sx or 0), (sy or 0), (w or sizex), (h or sizey), img.rotation}}
 end
 
 function screen.drawPoint(scr, x, y, color)
@@ -191,15 +193,13 @@ function screen.startDrawing2D() -- unused
 	-- As you can change the screen size, we have to re-calculate this every time.
 	offsetX = math.floor((gfx.BOTTOM_WIDTH-SCREEN_WIDTH)/2)
 	offsetY = math.floor((gfx.BOTTOM_HEIGHT-SCREEN_HEIGHT)/2)
-	if drawScreen == gfx.GFX_TOP then
+	if drawScreen == gfx.TOP then
 		offsetX = offsetX + 40
 	end
 end
 
 function screen.endDrawing()
-	gfx.startFrame(drawScreen)
-	--gfx.text(2, 2, "x: "..offsetX.." ;y: "..offsetY.." ;stackUP: "..#videoStack[0].." ;stackDOWN: "..#videoStack[1]) -- debug only
-	--gfx.text(2, 12, "screen: "..drawScreen.." ; stack: "..#videoStack[drawScreen]) -- debug only
+	gfx.start(drawScreen)
 	for i=1, #videoStack[drawScreen] do
 		local e = videoStack[drawScreen][i]
 		if e[1] == "img" then
@@ -210,7 +210,20 @@ function screen.endDrawing()
 			gfx[e[1]](table.unpack(e[2]))
 		end
 	end
-	gfx.endFrame()
+	
+	if offsetY ~= 0 then
+		gfx.rectangle(0, 0, 400, offsetY, 0, color.getBackground())
+		gfx.rectangle(0, SCREEN_HEIGHT+offsetY, 400, offsetY, 0, color.getBackground())
+	end
+	if offsetX ~= 0 then
+		gfx.rectangle(0, 0, offsetX, 240, 0, color.getBackground())
+		gfx.rectangle(offsetX+SCREEN_WIDTH, 0, offsetX, 240, 0, color.getBackground())
+	end
+	if drawScreen == gfx.TOP then
+		gfx.text(380, 225, tostring(gfx.getFPS()))
+	end
+	
+	gfx.stop()
 	
 	-- set the screen
 	drawScreen = ((drawScreen == 0 and 1) or 0)

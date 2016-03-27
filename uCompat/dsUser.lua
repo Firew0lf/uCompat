@@ -67,7 +67,7 @@ function dsUser.getAlarmMinute()
 end
 
 function dsUser.getLanguage()
-	return language5[cgfu.getLanguage()]
+	return language5[cfgu.getLanguage()]
 end
 
 function dsUser.getGBAScreen()

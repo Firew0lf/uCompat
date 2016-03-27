@@ -133,7 +133,7 @@ function Canvas.newGradientRect(x1, y1, x2, y2, color1, color2, color3, color4)
 	return o
 end
 
-function Canvas.newText(x1, y1 text, color)
+function Canvas.newText(x1, y1, text, color)
 	local o = attrTable()
 	o.type = TYPE_TEXT
 	o[ATTR_X1] = x1
@@ -212,7 +212,7 @@ function Canvas.setAttr(object, attrName, attrValue)
 end
 
 function Canvas.getAttr(object, attrName)
-	return obect[attrName]
+	return object[attrName]
 end
 
 function Canvas.setObjOnTop(canvas, object)
