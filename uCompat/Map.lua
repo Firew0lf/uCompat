@@ -6,14 +6,40 @@
 
 map = require("ctr.gfx.map")
 
+-- Interface
+Map = {}
+
+function Map.mapToTable(filename, w, h)
+	local f = io.open(filename, "r")
+	local data = f:read("a")
+	f:close()
+	
+	local buff = {}
+	local word
+	for word in string.gmatch(data, "(%d)|\n*") do
+		buff[#buff+1] = tonumber(word)
+		if #buff == w*h then break end
+	end
+	
+	local t = {}
+	local x,y
+	for y=1, h do
+		t[y] = {}
+		for x=1, w do
+			t[y][x] = buff[x+((y-1)*w)]
+		end
+	end
+	
+	return t
+end
+
 -- Module
 
 require("uCompat.screen")
 
-Map = {}
-
 function Map.new(image, mapFile, width, height, tileWidth, tileHeight)
-	local m = map.load(mapFile, image.texture, tileWidth, tileHeight)
+	local tiles = mapToTable(mapFile, width, height)
+	local m = map.load(tiles, image.texture, tileWidth, tileHeight)
 	
 	return {
 		map = m,

@@ -9,11 +9,13 @@ map = require("ctr.gfx.map")
 -- Module
 
 require("uCompat.screen")
+require("uCompat.Map")
 
 ScrollMap = {}
 
 function ScrollMap.new(image, mapFile, width, height, tileWidth, tileHeight)
-	local m = map.load(mapFile, image.texture, tileWidth, tileHeight)
+	local tiles = Map.mapToTable(mapFile, width, height)
+	local m = map.load(tiles, image.texture, tileWidth, tileHeight)
 	return {
 		map = m,
 		scrollX = 0,

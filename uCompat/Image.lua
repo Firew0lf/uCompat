@@ -9,7 +9,7 @@ local texture = require("ctr.gfx.texture")
 -- Constants
 
 RAM = texture.PLACE_RAM
-VRAM = texture.PLACE_VRAM
+VRAM = texture.PLACE_VRAM -- has to be "PLACE_RAM" on hardware
 
 -- Module
 

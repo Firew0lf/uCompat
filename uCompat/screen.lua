@@ -200,6 +200,7 @@ end
 
 function screen.endDrawing()
 	gfx.start(drawScreen)
+	gfx.rectangle(offsetX, offsetY, SCREEN_WIDTH, SCREEN_HEIGHT, 0, color.RGBA8(0,0,0,255))
 	for i=1, #videoStack[drawScreen] do
 		local e = videoStack[drawScreen][i]
 		if e[1] == "img" then
