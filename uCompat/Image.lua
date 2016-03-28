@@ -5,6 +5,7 @@
 -- Local
 
 local texture = require("ctr.gfx.texture")
+local color = require("ctr.gfx.color")
 
 -- Constants
 
@@ -18,9 +19,10 @@ Image = {}
 function Image.load(path, dest)
 	local t = texture.load(path, dest)
 	if not t then return nil end
+	local w,h = t:getSize()
 	return { -- Image object
 		texture = t,
-		rotation = 0,
+		rotation = 0.0,
 		scaleX = 1,
 		scaleY = 1
 	}
@@ -49,11 +51,11 @@ function Image.scale(img, w, h)
 end
 
 function Image.rotate(img, angle, cx, cy)
-	img.rotation = angle*(math.pi/256)
+	img.rotation = angle*(math.pi/256.0)
 end
 
 function Image.rotateDegree(img, angle, cx, cy)
-	img.rotation = angle*(math.pi/180)
+	img.rotation = angle*(math.pi/180.0)
 end
 
 function Image.mirrorH(img, activate)

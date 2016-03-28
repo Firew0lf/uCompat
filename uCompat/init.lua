@@ -21,6 +21,8 @@ function table.getn(t)
 	return #t
 end
 
+unpack = table.unpack
+
 -- Other libs
 require("uCompat.screen")
 require("uCompat.Color")
@@ -41,3 +43,4 @@ require("uCompat.System")
 require("uCompat.ini")
 require("uCompat.Wifi")
 require("uCompat.Nifi")
+require("uCompat.DateTime")

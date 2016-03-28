@@ -18,8 +18,14 @@ local function fixPath(DSpath)
 		path = ("sdmc:"..DSpath)
 	elseif DSpath:sub(1, 5) == "efs:/" then
 		path = ("romfs:/"..DSpath:sub(6,-1))
+	elseif DSpath:sub(1, 2) ~= "./" then
+		path = (fs.getDirectory()..DSpath)
 	else
 		path = DSpath
+	end
+	
+	if path:sub(-1,-1) ~= "/" then
+		path = (path.."/")
 	end
 	
 	return path

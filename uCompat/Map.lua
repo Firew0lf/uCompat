@@ -62,8 +62,8 @@ function Map.draw(scr, m, x, y, w, h)
 end
 
 function Map.scroll(m, x, y)
-	m.scrollX = x
-	m.scrollY = y
+	m.scrollX = (0-x)
+	m.scrollY = (0-y)
 end
 
 function Map.space(m, x, y)

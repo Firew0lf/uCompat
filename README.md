@@ -1,12 +1,11 @@
 # uCompat
 µLua compatibility layer for ctrµLua.
 
-Untested.
-
 Actually done:
  * Canvas
  * Color
  * Controls
+ * DateTime
  * Debug
  * dsUser
  * Font

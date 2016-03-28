@@ -176,6 +176,7 @@ function Canvas.newImage(x1, y1, image, x2, y2, x3, y3)
 	o[ATTR_Y2] = y2
 	o[ATTR_X3] = x3
 	o[ATTR_Y3] = y3
+	return o
 end
 
 function Canvas.add(canvas, object)

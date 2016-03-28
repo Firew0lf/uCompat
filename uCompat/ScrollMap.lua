@@ -37,8 +37,8 @@ function ScrollMap.draw(scr, m)
 end
 
 function ScrollMap.scroll(m, x, y)
-	m.scrollX = x
-	m.scrollY = y
+	m.scrollX = (0-x)
+	m.scrollY = (0-y)
 end
 
 function ScrollMap.setTile(m, x, y, t)

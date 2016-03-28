@@ -120,29 +120,43 @@ function screen.setAlpha(level, layer)
 end
 
 function screen.print(scr, x, y, text, color)
+	local x = math.floor(x)
+	local y = math.floor(y)
 	checkBuffer(scr)[#videoStack[scr]+1] = {"text", {offsetX+x, offsetY+y, text, 8, RGB2RGBA(color), nil}}
 end
 
 function screen.printFont(scr, x, y, text, color, font)
+	local x = math.floor(x)
+	local y = math.floor(y)
 	checkBuffer(scr)[#videoStack[scr]+1] = {"text", {offsetX+x, offsetY+y, text, 8, RGB2RGBA(color), nil}}
 end
 
 function screen.blit(scr, x, y, img, sx, sy, w, h)
-	local x = math.floor(x) -- \ Compatibility patch for some homebrews not using integers
-	local y = math.floor(y) -- /
+	local x = math.floor(x)
+	local y = math.floor(y)
 	local sizex, sizey = img.texture:getSize()
 	checkBuffer(scr)[#videoStack[scr]+1] = {"img", img.texture, {offsetX+x+math.floor(sizex/2), offsetY+y+math.floor(sizey/2), (sx or 0), (sy or 0), (w or sizex), (h or sizey), img.rotation}}
 end
 
 function screen.drawPoint(scr, x, y, color)
+	local x = math.floor(x)
+	local y = math.floor(y)
 	checkBuffer(scr)[#videoStack[scr]+1] = {"point", {offsetX+x, offsetY+y, RGB2RGBA(color)}}
 end
 
 function screen.drawLine(scr, x0, y0, x1, y1, color)
-	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetX+y0, offsetX+x1, offsetY+y1, 1, RGB2RGBA(color)}}
+	local x0 = math.floor(x0)
+	local y0 = math.floor(y0)
+	local x1 = math.floor(x1)
+	local y1 = math.floor(y1)
+	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y0, offsetX+x1, offsetY+y1, 1, RGB2RGBA(color)}}
 end
 
 function screen.drawRect(scr, x0, y0, x1, y1, color)
+	local x0 = math.floor(x0)
+	local y0 = math.floor(y0)
+	local x1 = math.floor(x1)
+	local y1 = math.floor(y1)
 	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y0, offsetX+x0, offsetY+y1, 1, RGB2RGBA(color)}}
 	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y0, offsetX+x1, offsetY+y0, 1, RGB2RGBA(color)}}
 	checkBuffer(scr)[#videoStack[scr]+1] = {"line", {offsetX+x0, offsetY+y1, offsetX+x1, offsetY+y1, 1, RGB2RGBA(color)}}
@@ -150,6 +164,10 @@ function screen.drawRect(scr, x0, y0, x1, y1, color)
 end
 
 function screen.drawFillRect(scr, x0, y0, x1, y1, color)
+	local x0 = math.floor(x0)
+	local y0 = math.floor(y0)
+	local x1 = math.floor(x1)
+	local y1 = math.floor(y1)
 	checkBuffer(scr)[#videoStack[scr]+1] = {"rectangle", {offsetX+x0, offsetY+y0, (x1-x0), (y1-y0), 0, RGB2RGBA(color)}}
 end
 
