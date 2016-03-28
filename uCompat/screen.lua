@@ -135,7 +135,7 @@ function screen.blit(scr, x, y, img, sx, sy, w, h)
 	local x = math.floor(x)
 	local y = math.floor(y)
 	local sizex, sizey = img.texture:getSize()
-	checkBuffer(scr)[#videoStack[scr]+1] = {"img", img.texture, {offsetX+x+math.floor(sizex/2), offsetY+y+math.floor(sizey/2), (sx or 0), (sy or 0), (w or sizex), (h or sizey), img.rotation}}
+	checkBuffer(scr)[#videoStack[scr]+1] = {"img", img.texture, {offsetX+x+math.floor((w or sizex)/2), offsetY+y+math.floor((h or sizey)/2), (sx or 0), (sy or 0), (w or sizex), (h or sizey), img.rotation}}
 end
 
 function screen.drawPoint(scr, x, y, color)
