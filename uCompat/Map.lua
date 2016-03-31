@@ -4,13 +4,15 @@
 
 -- Local
 
-map = require("ctr.gfx.map")
+local map = require("ctr.gfx.map")
 
--- Interface
+require("uCompat.System")
+
+-- Module
 Map = {}
 
 function Map.mapToTable(filename, w, h)
-	local f = io.open(filename, "r")
+	local f = assert(io.open(filename, "r"))
 	local data = f:read("a")
 	f:close()
 	
@@ -38,7 +40,7 @@ end
 require("uCompat.screen")
 
 function Map.new(image, mapFile, width, height, tileWidth, tileHeight)
-	local tiles = mapToTable(mapFile, width, height)
+	local tiles = mapToTable(System.fixPath(mapFile), width, height)
 	local m = map.load(tiles, image.texture, tileWidth, tileHeight)
 	
 	return {
@@ -51,7 +53,8 @@ function Map.new(image, mapFile, width, height, tileWidth, tileHeight)
 end
 
 function Map.destroy(m)
-	m.map:unload()
+	-- This `if` should not exist.
+	if m then	m.map:unload() end -- got some crashes here ... We should ban global values in Lua.
 end
 
 function Map.draw(scr, m, x, y, w, h)

@@ -6,6 +6,7 @@
 
 local texture = require("ctr.gfx.texture")
 local color = require("ctr.gfx.color")
+require("uCompat.System")
 
 -- Constants
 
@@ -17,9 +18,14 @@ VRAM = texture.PLACE_VRAM -- has to be "PLACE_RAM" on hardware
 Image = {}
 
 function Image.load(path, dest)
-	local t = texture.load(path, dest)
+	local t = texture.load(System.fixPath(path), dest)
 	if not t then return nil end
 	local w,h = t:getSize()
+	for x=0, w do
+		for y=0, h do
+			if t:getPixel(x,y) == 0xff00ffff then t:setPixel(x, y, 0) end
+		end
+	end
 	return { -- Image object
 		texture = t,
 		rotation = 0.0,

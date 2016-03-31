@@ -9,42 +9,6 @@
 local fs = require("ctr.fs")
 local gfx = require("ctr.gfx")
 
--- µ -> ctrµ
-local function fixPath(DSpath)
-	local path
-	if DSpath:sub(1, 5) == "fat:/" then -- fix root
-		path = ("sdmc:/"..DSpath:sub(6, -1))
-	elseif DSpath:sub(1, 1) == "/" then
-		path = ("sdmc:"..DSpath)
-	elseif DSpath:sub(1, 5) == "efs:/" then
-		path = ("romfs:/"..DSpath:sub(6,-1))
-	elseif DSpath:sub(1, 2) ~= "./" then
-		path = (fs.getDirectory()..DSpath)
-	else
-		path = DSpath
-	end
-	
-	if path:sub(-1,-1) ~= "/" then
-		path = (path.."/")
-	end
-	
-	return path
-end
-
--- ctrµ -> µ
-local function unfixPath(path)
-	local DSpath
-	if path:sub(1, 6) == "sdmc:/" then
-		DSpath = ("fat:/"..path:sub(7, -1))
-	elseif path.sub(1, 1) == "/" then
-		DSpath = ("fat:"..path)
-	elseif path:sub(1, 7) == "romfs:/" then
-		DSpath = ("efs:/"..path:sub(8, -1))
-	end
-	
-	return DSpath
-end
-
 -- Constants
 
 LED_ON = 0
@@ -58,11 +22,11 @@ System = {}
 System.EFS = false
 
 function System.currentDirectory()
-	return unfixPath(fs.getDirectory())
+	return System.unfixPath(fs.getDirectory())
 end
 
 function System.changeDirectory(dir)
-	fs.setDirectory(fixPath(dir))
+	fs.setDirectory(System.fixPath(dir))
 end
 
 function System.remove(path)
@@ -79,7 +43,7 @@ end
 
 function System.listDirectory(path)
 	
-	local list = fs.list(fixPath(path))
+	local list = fs.list(System.fixPath(path))
 	local flist = {}
 	for i=1, #list do
 		flist[i] = {
@@ -118,4 +82,38 @@ end
 
 function System.sleep()
 
+end
+
+-- Small API
+
+-- µ -> ctrµ
+function System.fixPath(DSpath)
+	local path
+	if DSpath:sub(1, 5) == "fat:/" then -- fix root
+		path = ("sdmc:/"..DSpath:sub(6, -1))
+	elseif DSpath:sub(1, 1) == "/" then
+		path = ("sdmc:"..DSpath)
+	elseif DSpath:sub(1, 5) == "efs:/" then
+		path = ("romfs:/"..DSpath:sub(6,-1))
+	elseif DSpath:sub(1, 2) ~= "./" then
+		path = (fs.getDirectory()..DSpath)
+	else
+		path = DSpath
+	end
+	
+	return path
+end
+
+-- ctrµ -> µ
+function System.unfixPath(path)
+	local DSpath
+	if path:sub(1, 6) == "sdmc:/" then
+		DSpath = ("fat:/"..path:sub(7, -1))
+	elseif path.sub(1, 1) == "/" then
+		DSpath = ("fat:"..path)
+	elseif path:sub(1, 7) == "romfs:/" then
+		DSpath = ("efs:/"..path:sub(8, -1))
+	end
+	
+	return DSpath
 end

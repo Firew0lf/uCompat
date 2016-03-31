@@ -4,7 +4,7 @@
 
 -- Local
 
-map = require("ctr.gfx.map")
+local map = require("ctr.gfx.map")
 
 -- Module
 
@@ -14,7 +14,7 @@ require("uCompat.Map")
 ScrollMap = {}
 
 function ScrollMap.new(image, mapFile, width, height, tileWidth, tileHeight)
-	local tiles = Map.mapToTable(mapFile, width, height)
+	local tiles = Map.mapToTable(System.fixPath(mapFile), width, height)
 	local m = map.load(tiles, image.texture, tileWidth, tileHeight)
 	return {
 		map = m,
@@ -26,7 +26,7 @@ function ScrollMap.new(image, mapFile, width, height, tileWidth, tileHeight)
 end
 
 function ScrollMap.destroy(m)
-	m.map:destroy()
+	m.map:unload()
 end
 
 function ScrollMap.draw(scr, m)

@@ -41,7 +41,7 @@ local function attrTable()
 		[ATTR_COLOR3] = false,
 		[ATTR_COLOR4] = false,
 		[ATTR_TEXT] = false,
-		[ATTR_VISIBLE] = false,
+		[ATTR_VISIBLE] = true,
 		[ATTR_FONT] = false,
 		[ATTR_IMAGE] = false
 	}
@@ -186,7 +186,9 @@ end
 function Canvas.draw(scr, canvas, x, y)
 	for i=1, #canvas do
 		local o = canvas[i] -- gotta go fast
-		if o.type == TYPE_LINE then
+		if not o[ATTR_VISIBLE] then
+			-- Invisible
+		elseif o.type == TYPE_LINE then
 			screen.drawLine(scr, o[ATTR_X1]+x, o[ATTR_Y1]+y, o[ATTR_X2]+x, o[ATTR_Y2]+y, o[ATTR_COLOR])
 		elseif o.type == TYPE_POINT then
 			screen.drawPoint(scr, o[ATTR_X1]+x, o[ATTR_Y1]+y, o[ATTR_COLOR])

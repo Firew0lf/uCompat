@@ -7,8 +7,14 @@
 -- Just something needed
 
 local ctr = require("ctr")
+local ptm = require("ctr.ptm")
+
+-- Setup the new3DS overclock, uncomment if you need more speed
+ptm.init()
+ptm.configureNew3DSCPU(true)
 
 -- Constants
+MICROLUA_VERSION = "Microlua 4.1" -- such old, very version
 ULUA_VERSION = "Microlua 4.7.2"
 ULUA_DIR = ctr.root -- you can change it to anything
 ULUA_SCRIPTS = (ULUA_DIR.."scripts/") -- Warning: you may need to create the folder

@@ -72,7 +72,7 @@ function stopDrawing()
 	if drawScreen == 0 then
 		fpscount = fpscount + 1
 	end
-	if (ctr.time() - fpstime) > 1000 then
+	if (ctr.time() - fpstime) >= 1000 then
 		NB_FPS = fpscount
 		fpstime = ctr.time()
 		fpscount = 0
@@ -205,7 +205,8 @@ function screen.init() -- unused
 end
 
 function screen.startDrawing2D() -- unused
-		--reset the video stacks
+	ctr.run()
+	--reset the video stacks
 	videoStack[drawScreen] = {}
 	
 	-- As you can change the screen size, we have to re-calculate this every time.
